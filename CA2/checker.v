@@ -22,7 +22,7 @@ module checker #(
         for (i = 0; i < PAR_READ; i = i + 1) begin
             if ((read_pointer + i) % (1 << POINTER_SIZE) == write_pointer) begin 
                 check_read = 0; 
-                break;          
+       
             end
         end
     end
@@ -33,9 +33,10 @@ module checker #(
         for (i = 0; i < PAR_WRITE; i = i + 1) begin
             if ((write_pointer + i) % (1 << POINTER_SIZE) == read_pointer) begin 
                 check_write = 0; 
-                break;           
+          
             end
         end
+        
     end
 
 

@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 module top_module_tb;
 
@@ -9,7 +9,7 @@ module top_module_tb;
     parameter BUFFER_ADDR = 3;
 
     // Testbench signals
-    reg clk;
+    reg clk=1'b0;
     reg rst;
     reg read_en;
     reg write_en;
@@ -39,11 +39,9 @@ module top_module_tb;
         .ready(ready)
     );
 
-    // Clock generation
-    initial begin
-        clk = 0;
-        forever #5 clk = ~clk; // 10 time units period
-    end
+
+    always #5 clk = ~clk; // 10 time units period
+
 
     // Test stimulus
     initial begin
@@ -70,18 +68,7 @@ module top_module_tb;
         read_en = 0; // Disable reading
 
         // Test Case 3: Check FIFO status
-        #10;
-        if (full) begin
-            $display("FIFO is full");
-        end else begin
-            $display("FIFO is not full");
-        end
 
-        if (empty) begin
-            $display("FIFO is empty");
-        end else begin
-            $display("FIFO is not empty");
-        end
 
         // Test Case 4: Reset FIFO
         rst = 1; // Assert reset
