@@ -13,7 +13,8 @@ module datapath( input clk,
                  input loadOut,
                  output DoneA,
                  output DoneB,
-                 output down_done
+                 output down_done,
+                 output [15:0] mult_result
                 );
 
     wire [15:0] A_out;
@@ -31,6 +32,7 @@ module datapath( input clk,
     assign DoneA = A_out[15] || (1'b0) ;//check
     assign DoneB = B_out[15] || (1'b0) ;//check
 
+    assign mult_result = mult_res;
 
 
 endmodule
