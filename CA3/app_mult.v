@@ -3,8 +3,9 @@ module app_mult(input clk ,
                 input rst,
                 output Done
 );
-    wire ShlA,loadA,ShlB,loadB,rst5,cntU,cntD,ShrOut,loadOut,DoneA,DoneB,down_done;
+    wire shlA,loadA,shlB,loadB,rst5,cntU,cntD,shrOut,loadOut,DoneA,DoneB,downDone;
 
-    datapath DP (clk,rst,A,B,ShlA,loadA,ShlB,loadB,rst5,cntU,cntD,ShrOut,loadOut,DoneA,DoneB,down_done);
-    controller CU(start,clk,rst,DoneA,DoneB,down_done,Done,rst5,loadA,loadB,ShlA,ShlB,cntU,cntD,loadOut,ShrOut);
+    datapath DP (clk,rst,A,B,shlA,loadA,shlB,loadB,rst5,cntU,cntD,shrOut,loadOut,DoneA,DoneB,downDone);
+    controller CU(clk,rst,start,DoneA,DoneB,downDone,Done,rst5,loadA,loadB,shlA,shlB,cntU,cntD,loadOut,shrOut);
+
 endmodule

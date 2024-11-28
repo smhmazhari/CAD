@@ -10,21 +10,21 @@ module controller(input clk,input rst,input start,input DoneA,input DoneB,input 
     always @(*)begin
         ns = IDLE;
         case(ps)
-            IDLE : ns = start ? WAIT : IDEL;
+            IDLE : ns = start ? WAIT : IDLE;
             WAIT : ns = start ? WAIT : CHECKA;
             CHECKA : ns = DoneA ? CHECKB : SHA;
             SHA : ns = CHECKA;
             CHECKB : ns = DoneB ? SHOUT : SHB;
             SHB : ns = CHECKB;
-            SHOUT : ns = down_done ? IDLE : SHOUT;
+            SHOUT : ns = downDone ? IDLE : SHOUT;
         endcase
     end
     always @(*)begin
         {Done,rst5,loadA,loadB,shlA,shlB,cntU,cntD,loadOut,shrOut} = 10'd0;
         case(ps)
             WAIT : begin
-              rst5 = 1'd0;
-              {loadA,loadA} = start ? 2'd0 : 2'd3;
+              rst5 = 1'd1;
+              {loadA,loadB} = start ? 2'd0 : 2'd3;
             end
             SHA : begin
               {shlA,cntU} = 2'd3;
@@ -36,7 +36,7 @@ module controller(input clk,input rst,input start,input DoneA,input DoneB,input 
                 loadOut = DoneB ? 1'd1 : 1'd0;
             end
             SHOUT :  begin
-                if(down_done == 1'b0)begin
+                if(downDone == 1'b0)begin
                     shrOut = 1'b1;
 
                 end
