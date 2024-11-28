@@ -29,8 +29,8 @@ module datapath( input clk,
     shift_register_right_16bit result_register(clk,loadOut,ShrOut,temp_res,mult_res);
     counter_5bit counter_5(clk,rst,rst5,cntU,cntD,down_done,temp);
     
-    assign DoneA = A_out[15] || (1'b0) ;//check
-    assign DoneB = B_out[15] || (1'b0) ;//check
+    assign DoneA = A_out[15] || (1'b0) ;
+    assign DoneB = B_out[15] || (1'b0) ;
 
     assign mult_result = mult_res;
 
