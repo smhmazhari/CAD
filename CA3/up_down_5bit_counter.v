@@ -5,7 +5,7 @@ module counter_5bit (
     input cntU,
     input cntD,
     output down_done,
-    output reg [4:0] result
+    output [4:0] result
 );
     reg [4:0] in_res;
     always @(posedge clk) begin

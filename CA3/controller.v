@@ -1,54 +1,25 @@
-module controller(input clk,input rst,input start,input DoneA,input DoneB,input downDone,output reg Done,output reg rst5,output reg loadA,output reg loadB,output reg shlA,output reg shlB,output reg cntU,output reg cntD,output reg loadOut,output reg shrOut);
-    parameter IDLE = 3'd0 ,WAIT = 3'd1 ,CHECKA = 3'd2 ,SHA = 3'd3, CHECKB = 3'd4 ,SHB = 3'd5 ,SHOUT = 3'd6;
-    reg [2:0]ps;
-    reg [2:0]ns;
-    always @(posedge clk) begin
-        if(rst == 1'b1) 
-            ps <= 3'b0;
-        else ps <= ns;
-    end
-    always @(*)begin
-        ns = IDLE;
-        case(ps)
-            IDLE : ns = start ? WAIT : IDLE;
-            WAIT : ns = start ? WAIT : CHECKA;
-            CHECKA : ns = DoneA ? CHECKB : SHA;
-            SHA : ns = CHECKA;
-            CHECKB : ns = DoneB ? SHOUT : SHB;
-            SHB : ns = CHECKB;
-            SHOUT : ns = downDone ? IDLE : SHOUT;
-        endcase
-    end
-    always @(*)begin
-        {Done,rst5,loadA,loadB,shlA,shlB,cntU,cntD,loadOut,shrOut} = 10'd0;
-        case(ps)
-            WAIT : begin
-              rst5 = 1'd1;
-              {loadA,loadB} = start ? 2'd0 : 2'd3;
-            end
-            SHA : begin
-              {shlA,cntU} = 2'd3;
-            end
-            SHB : begin
-              {shlB,cntU} = 2'd3;
-            end
-            CHECKB : begin
-                loadOut = DoneB ? 1'd1 : 1'd0;
-            end
-            SHOUT :  begin
-                if(downDone == 1'b0)begin
-                    shrOut = 1'b1;
+module controller(input clk,input rst,input start,input DoneA,input DoneB,input downDone,output Done,output rst5,output loadA,output loadB,output shlA,output shlB,output cntU,output cntD,output loadOut,output shrOut);
+    wire IDLE,WAIT,CHA,SHA,CHB,SHB,SHOUT;
+    wire IDLE_inv,IDLE_out,WAIT_inv,WAIT_out,CHA_inv,CHA_out,SHA_inv,SHA_out,CHB_inv,CHB_out,SHB_inv,SHB_out,SHOUT_inv,SHOUT_out;
+    //module one_hot_block(input clk,input rst,input [2:0]in,input signal,output state,output out_inv,output out);
 
-                end
-                else begin
-                    Done = 1'd1;
-                end
-                     
-                cntD = 1'b1;
-            end
+    one_hot_block_first_state IDLEB(clk,1'd0,{rst,IDLE_inv,SHOUT_out},start,IDLE,IDLE_inv,IDLE_out);
+    one_hot_block WAITB(clk,rst,{WAIT_out,IDLE_out},start,WAIT,WAIT_inv,WAIT_out);
+    one_hot_block CHAB(clk,rst,{WAIT_inv,SHA},DoneA,CHA,CHA_inv,CHA_out);
+    one_hot_block SHAB(clk,rst,{CHA_inv,1'd0},1'd1,SHA,SHA_inv,SHA_out);
+    one_hot_block CHBB(clk,rst,{CHA_out,SHB},DoneB,CHB,CHB_inv,CHB_out);
+    one_hot_block SHBB(clk,rst,{CHB_inv,1'd0},1'd1,SHB,SHB_inv,SHB_out);
+    one_hot_block SHOB(clk,rst,{CHB_out,SHOUT_inv},downDone,SHOUT,SHOUT_inv,SHOUT_out);
+    assign rst5 = WAIT;
+    assign  loadA = WAIT_inv;
+    assign shlA = SHA;
+    assign cntU = SHA | SHB;
+    assign shlB = SHB;
+    assign loadB = WAIT_inv;
+    assign loadOut = CHB_out;
+    assign cntD = SHOUT;
+    assign shrOut = SHOUT_inv;
+    assign Done = SHOUT_out;
 
-
-        endcase
-    end
 
 endmodule
