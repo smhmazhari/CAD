@@ -1,4 +1,5 @@
 module mult (input [7:0] D1 ,input [7:0] D2 , output [15:0] out);
+	//0
 	wire w10 , w20 , w30 , w40 , w50 , w60 , w70;
 	And and00(.a(D1[0]) , .b(D2[0]) , .out(out[0]));
 	And and10(.a(D1[1]) , .b(D2[0]) , .out(w10) );
@@ -9,8 +10,7 @@ module mult (input [7:0] D1 ,input [7:0] D2 , output [15:0] out);
 	And and60(.a(D1[6]) , .b(D2[0]) , .out(w60) );
 	And and70(.a(D1[7]) , .b(D2[0]) , .out(w70) );
 
-
-
+	//1
 	wire w01 , w11 , w21 , w31 , w41 , w51 , w61 , w71 ;
 	And and01(.a(D1[0]) , .b(D2[1]) , .out(w01));
 	And and11(.a(D1[1]) , .b(D2[1]) , .out(w11));
@@ -30,9 +30,9 @@ module mult (input [7:0] D1 ,input [7:0] D2 , output [15:0] out);
 	FA fa41(.A(w41),.B(w50) , .Cin(c13) , .Sum(s14) , .Cout(c14));
 	FA fa51(.A(w51),.B(w60) , .Cin(c14) , .Sum(s15) , .Cout(c15));
 	FA fa61(.A(w61),.B(w70) , .Cin(c15) , .Sum(s16) , .Cout(c16));
-	FA fa71(.A(w71),.B(1'b1) , .Cin(c16) , .Sum(s17) , .Cout(c17));
+	FA fa71(.A(w71),.B(1'b0) , .Cin(c16) , .Sum(s17) , .Cout(c17));
 
-
+	//2
 	wire w02 , w12 , w22 , w32 , w42 , w52 , w62 , w72;
 	And and02(.a(D1[0]) , .b(D2[2]) , .out(w02));
 	And and12(.a(D1[1]) , .b(D2[2]) , .out(w12) );
@@ -53,7 +53,7 @@ module mult (input [7:0] D1 ,input [7:0] D2 , output [15:0] out);
 	FA fa62(.A(w62),.B(s17) , .Cin(c25) , .Sum(s26) , .Cout(c26));
 	FA fa72(.A(w72),.B(c17) , .Cin(c26) , .Sum(s27) , .Cout(c27));
 
-
+	//3
 	wire w03 , w13 , w23 , w33 , w43 , w53 , w63 , w73;
 	And and03(.a(D1[0]) , .b(D2[3]) , .out(w03));
 	And and13(.a(D1[1]) , .b(D2[3]) , .out(w13) );
@@ -111,59 +111,58 @@ module mult (input [7:0] D1 ,input [7:0] D2 , output [15:0] out);
 
 
 	wire c50 , c51 , c52 , c53 , c54 , c55 , c56, c57 , s51 , s52 , s53 , s54 , s55 , s56 , s57 ;
-	FA fa04(.A(w05),.B(s41) , .Cin(1'b0) , .Sum(out[5]) , .Cout(c50));
-	FA fa14(.A(w15),.B(s42) , .Cin(c50) , .Sum(s51) , .Cout(c51));
-	FA fa24(.A(w25),.B(s43) , .Cin(c51) , .Sum(s52) , .Cout(c52));
-	FA fa34(.A(w35),.B(s44) , .Cin(c52) , .Sum(s53) , .Cout(c53));
-	FA fa44(.A(w45),.B(s45) , .Cin(c53) , .Sum(s54) , .Cout(c54));
-	FA fa54(.A(w55),.B(s46) , .Cin(c54) , .Sum(s55) , .Cout(c55));
-	FA fa64(.A(w65),.B(s47) , .Cin(c55) , .Sum(s56) , .Cout(c56));
-	FA fa74(.A(w75),.B(c47) , .Cin(c56) , .Sum(s57) , .Cout(c57));
+	FA fa05(.A(w05),.B(s41) , .Cin(1'b0) , .Sum(out[5]) , .Cout(c50));
+	FA fa15(.A(w15),.B(s42) , .Cin(c50) , .Sum(s51) , .Cout(c51));
+	FA fa25(.A(w25),.B(s43) , .Cin(c51) , .Sum(s52) , .Cout(c52));
+	FA fa35(.A(w35),.B(s44) , .Cin(c52) , .Sum(s53) , .Cout(c53));
+	FA fa45(.A(w45),.B(s45) , .Cin(c53) , .Sum(s54) , .Cout(c54));
+	FA fa55(.A(w55),.B(s46) , .Cin(c54) , .Sum(s55) , .Cout(c55));
+	FA fa65(.A(w65),.B(s47) , .Cin(c55) , .Sum(s56) , .Cout(c56));
+	FA fa75(.A(w75),.B(c47) , .Cin(c56) , .Sum(s57) , .Cout(c57));
 
 	//6
 	wire w06 , w16 , w26 , w36 , w46 , w56 , w66 , w76;
-	And and05(.a(D1[0]) , .b(D2[6]) , .out(w06));
-	And and15(.a(D1[1]) , .b(D2[6]) , .out(w16) );
-	And and25(.a(D1[2]) , .b(D2[6]) , .out(w26) );
-	And and35(.a(D1[3]) , .b(D2[6]) , .out(w36) );
-	And and45(.a(D1[4]) , .b(D2[6]) , .out(w46) );
-	And and55(.a(D1[5]) , .b(D2[6]) , .out(w56) );
-	And and65(.a(D1[6]) , .b(D2[6]) , .out(w66) );
-	And and75(.a(D1[7]) , .b(D2[6]) , .out(w76) );
+	And and06(.a(D1[0]) , .b(D2[6]) , .out(w06));
+	And and16(.a(D1[1]) , .b(D2[6]) , .out(w16) );
+	And and26(.a(D1[2]) , .b(D2[6]) , .out(w26) );
+	And and36(.a(D1[3]) , .b(D2[6]) , .out(w36) );
+	And and46(.a(D1[4]) , .b(D2[6]) , .out(w46) );
+	And and56(.a(D1[5]) , .b(D2[6]) , .out(w56) );
+	And and66(.a(D1[6]) , .b(D2[6]) , .out(w66) );
+	And and76(.a(D1[7]) , .b(D2[6]) , .out(w76) );
 
 
 	wire c60 , c61 , c62 , c63 , c64 , c65 , c66, c67 , s61 , s62 , s63 , s64 , s65 , s66 , s67 ;
-	FA fa04(.A(w06),.B(s51) , .Cin(1'b0) , .Sum(out[6]) , .Cout(c60));
-	FA fa14(.A(w16),.B(s52) , .Cin(c60) , .Sum(s61) , .Cout(c61));
-	FA fa24(.A(w26),.B(s53) , .Cin(c61) , .Sum(s62) , .Cout(c62));
-	FA fa34(.A(w36),.B(s54) , .Cin(c62) , .Sum(s63) , .Cout(c63));
-	FA fa44(.A(w46),.B(s55) , .Cin(c63) , .Sum(s64) , .Cout(c64));
-	FA fa54(.A(w56),.B(s56) , .Cin(c64) , .Sum(s65) , .Cout(c65));
-	FA fa64(.A(w66),.B(s57) , .Cin(c65) , .Sum(s66) , .Cout(c66));
-	FA fa74(.A(w76),.B(c57) , .Cin(c66) , .Sum(s67) , .Cout(c67));
+	FA fa06(.A(w06),.B(s51) , .Cin(1'b0) , .Sum(out[6]) , .Cout(c60));
+	FA fa16(.A(w16),.B(s52) , .Cin(c60) , .Sum(s61) , .Cout(c61));
+	FA fa26(.A(w26),.B(s53) , .Cin(c61) , .Sum(s62) , .Cout(c62));
+	FA fa36(.A(w36),.B(s54) , .Cin(c62) , .Sum(s63) , .Cout(c63));
+	FA fa46(.A(w46),.B(s55) , .Cin(c63) , .Sum(s64) , .Cout(c64));
+	FA fa56(.A(w56),.B(s56) , .Cin(c64) , .Sum(s65) , .Cout(c65));
+	FA fa66(.A(w66),.B(s57) , .Cin(c65) , .Sum(s66) , .Cout(c66));
+	FA fa76(.A(w76),.B(c57) , .Cin(c66) , .Sum(s67) , .Cout(c67));
 
 	//7
 	wire w07 , w17 , w27 , w37 , w47 , w57 , w67 , w77;
-	And and05(.a(D1[0]) , .b(D2[7]) , .out(w07));
-	And and15(.a(D1[1]) , .b(D2[7]) , .out(w17) );
-	And and25(.a(D1[2]) , .b(D2[7]) , .out(w27) );
-	And and35(.a(D1[3]) , .b(D2[7]) , .out(w37) );
-	And and45(.a(D1[4]) , .b(D2[7]) , .out(w47) );
-	And and55(.a(D1[5]) , .b(D2[7]) , .out(w57) );
-	And and65(.a(D1[6]) , .b(D2[7]) , .out(w67) );
-	And and75(.a(D1[7]) , .b(D2[7]) , .out(w77) );
+	And and07(.a(D1[0]) , .b(D2[7]) , .out(w07));
+	And and17(.a(D1[1]) , .b(D2[7]) , .out(w17) );
+	And and27(.a(D1[2]) , .b(D2[7]) , .out(w27) );
+	And and37(.a(D1[3]) , .b(D2[7]) , .out(w37) );
+	And and47(.a(D1[4]) , .b(D2[7]) , .out(w47) );
+	And and57(.a(D1[5]) , .b(D2[7]) , .out(w57) );
+	And and67(.a(D1[6]) , .b(D2[7]) , .out(w67) );
+	And and77(.a(D1[7]) , .b(D2[7]) , .out(w77) );
 
 
 	wire c70 , c71 , c72 , c73 , c74 , c75 , c76, c77 , s71 , s72 , s73 , s74 , s75 , s76 , s77 ;
-	FA fa04(.A(w07),.B(s71) , .Cin(1'b0) , .Sum(out[7]) , .Cout(c70));
-	FA fa14(.A(w17),.B(s72) , .Cin(c70) , .Sum(out[8]) , .Cout(c71));
-	FA fa24(.A(w27),.B(s73) , .Cin(c71) , .Sum(out[9]) , .Cout(c72));
-	FA fa34(.A(w37),.B(s74) , .Cin(c72) , .Sum(out[10]) , .Cout(c73));
-	FA fa44(.A(w47),.B(s75) , .Cin(c73) , .Sum(out[11]) , .Cout(c74));
-	FA fa54(.A(w57),.B(s76) , .Cin(c74) , .Sum(out[12]) , .Cout(c75));
-	FA fa64(.A(w67),.B(s77) , .Cin(c75) , .Sum(out[13]) , .Cout(c76));
-	FA fa74(.A(w77),.B(c77) , .Cin(c76) , .Sum(out[14]) , .Cout(c77));
-	FA fa84(.A(c77),.B(1'b1) , .Cin(1'b0) , .Sum(out[14]) , .Cout());//check
-
+	FA fa07(.A(w07),.B(s61) , .Cin(1'b0) , .Sum(out[7]) , .Cout(c70));
+	FA fa17(.A(w17),.B(s62) , .Cin(c70) , .Sum(out[8]) , .Cout(c71));
+	FA fa27(.A(w27),.B(s63) , .Cin(c71) , .Sum(out[9]) , .Cout(c72));
+	FA fa37(.A(w37),.B(s64) , .Cin(c72) , .Sum(out[10]) , .Cout(c73));
+	FA fa47(.A(w47),.B(s65) , .Cin(c73) , .Sum(out[11]) , .Cout(c74));
+	FA fa57(.A(w57),.B(s66) , .Cin(c74) , .Sum(out[12]) , .Cout(c75));
+	FA fa67(.A(w67),.B(s67) , .Cin(c75) , .Sum(out[13]) , .Cout(c76));
+	FA fa77(.A(w77),.B(c67) , .Cin(c76) , .Sum(out[14]) , .Cout(c77));
+	FA fa87 (.A(c77),.B(1'b0) , .Cin(1'b0) , .Sum(out[15]) , .Cout());
 
 endmodule
