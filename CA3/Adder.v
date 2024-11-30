@@ -1,4 +1,4 @@
-module Adder #(parameter N = 10)(a, b, cin, s, cout);
+module Adder #(parameter N = 5)(a, b, cin, s, cout);
     input [N-1:0] a;
     input [N-1:0] b;
     input cin;

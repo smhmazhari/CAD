@@ -26,6 +26,7 @@ module counter_5bit (
     wire [4:0]dff_in;
     wire [4:0]mux_out;
     reg [4:0]dff_out;
+    wire cout;
     assign dff_in = rst5 ? 5'd0 : adder_out;
     always @(posedge clk,posedge rst)begin
         if(rst)
@@ -35,7 +36,8 @@ module counter_5bit (
         end
     end
     assign mux_out = (~cntD & ~cntU) ? 5'd0 : (cntD) ? 5'b11111 : 5'd00001;
-    assign adder_out = dff_out + mux_out;
+    //module Adder #(parameter N = 5)(a, b, cin, s, cout);
+    Adder adder5(dff_out,mux_out,1'd0,adder_out,cout);
     assign down_done = ~|(dff_out);
     assign result = dff_out;
 
