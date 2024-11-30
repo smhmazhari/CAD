@@ -25,27 +25,18 @@ module counter_5bit (
     wire [4:0]adder_out;
     wire [4:0]dff_in;
     wire [4:0]mux_out;
-    reg [4:0]dff_out;
     wire cout;
     // assign dff_in = rst5 ? 5'd0 : adder_out;
-    s2 input_dff0(1'd0,1'd0,adder_out[0],adder_out[0],rst5,rst5,1'd0,1'd0,rst,clk,dff_out[0]);
-    s2 input_dff1(1'd0,1'd0,adder_out[1],adder_out[1],rst5,rst5,1'd0,1'd0,rst,clk,dff_out[1]);
-    s2 input_dff2(1'd0,1'd0,adder_out[2],adder_out[2],rst5,rst5,1'd0,1'd0,rst,clk,dff_out[2]);
-    s2 input_dff3(1'd0,1'd0,adder_out[3],adder_out[3],rst5,rst5,1'd0,1'd0,rst,clk,dff_out[3]);
-    s2 input_dff4(1'd0,1'd0,adder_out[4],adder_out[4],rst5,rst5,1'd0,1'd0,rst,clk,dff_out[4]);
+    s2 input_dff0(1'd0,1'd0,adder_out[0],adder_out[0],rst5,rst5,1'd0,1'd0,rst,clk,result[0]);
+    s2 input_dff1(1'd0,1'd0,adder_out[1],adder_out[1],rst5,rst5,1'd0,1'd0,rst,clk,result[1]);
+    s2 input_dff2(1'd0,1'd0,adder_out[2],adder_out[2],rst5,rst5,1'd0,1'd0,rst,clk,result[2]);
+    s2 input_dff3(1'd0,1'd0,adder_out[3],adder_out[3],rst5,rst5,1'd0,1'd0,rst,clk,result[3]);
+    s2 input_dff4(1'd0,1'd0,adder_out[4],adder_out[4],rst5,rst5,1'd0,1'd0,rst,clk,result[4]);
 
-    always @(posedge clk,posedge rst)begin
-        if(rst)
-            dff_out <= 5'd0;
-        else begin
-            dff_out <= dff_in;
-        end
-    end
     assign mux_out = (~cntD & ~cntU) ? 5'd0 : (cntD) ? 5'b11111 : 5'd00001;
     //module Adder #(parameter N = 5)(a, b, cin, s, cout);
-    Adder adder5(dff_out,mux_out,1'd0,adder_out,cout);
-    assign down_done = ~|(dff_out);
-    assign result = dff_out;
+    Adder adder5(result,mux_out,1'd0,adder_out,cout);
+    assign down_done = ~|(result);
 
 
 endmodule
