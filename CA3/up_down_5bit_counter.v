@@ -27,7 +27,8 @@ module counter_5bit (
     wire [4:0]mux_out;
     reg [4:0]dff_out;
     wire cout;
-    assign dff_in = rst5 ? 5'd0 : adder_out;
+    // assign dff_in = rst5 ? 5'd0 : adder_out;
+    s2 input_dff(5'd0,5'd0,adder_out,adder_out,rst5,rst5,1'd0,1'd0,rst,clk,dff_out)
     always @(posedge clk,posedge rst)begin
         if(rst)
             dff_out <= 5'd0;
