@@ -19,4 +19,5 @@ module Adder #(parameter N = 5)(a, b, cin, s, cout);
 
     assign cout = carry[N-1];
     endgenerate
+    
 endmodule

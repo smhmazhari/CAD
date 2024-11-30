@@ -6,7 +6,6 @@ module shift_register_left_16bit (
   output[15:0] data_out 
 );
 
-
   shift_block b15(clk,rst,load,shl,data_in[15],data_out[14],data_out[15]);
   shift_block b14(clk,rst,load,shl,data_in[14],data_out[13],data_out[14]);
   shift_block b13(clk,rst,load,shl,data_in[13],data_out[12],data_out[13]);
@@ -23,4 +22,5 @@ module shift_register_left_16bit (
   shift_block b2(clk,rst,load,shl,data_in[2],data_out[1],data_out[2]);
   shift_block b1(clk,rst,load,shl,data_in[1],data_out[0],data_out[1]);
   shift_block b0(clk,rst,load,shl,data_in[0],1'd0,data_out[0]);
+
 endmodule

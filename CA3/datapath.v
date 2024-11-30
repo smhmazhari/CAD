@@ -31,8 +31,6 @@ module datapath( input clk,
     
     assign DoneA = A_out[15] || (1'b0) ;
     assign DoneB = B_out[15] || (1'b0) ;
-
     assign mult_result = mult_res;
-
 
 endmodule
