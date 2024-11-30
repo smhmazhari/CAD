@@ -23,7 +23,6 @@ module counter_5bit (
     // assign down_done = ~|(in_res);
     // assign result = in_res;
     wire [4:0]adder_out;
-    wire [4:0]dff_in;
     wire [4:0]mux_out;
     wire cout;
     // assign dff_in = rst5 ? 5'd0 : adder_out;
@@ -33,10 +32,25 @@ module counter_5bit (
     s2 input_dff3(adder_out[3],adder_out[3],1'd0,1'd0,rst5,rst5,1'd0,1'd0,rst,clk,result[3]);
     s2 input_dff4(adder_out[4],adder_out[4],1'd0,1'd0,rst5,rst5,1'd0,1'd0,rst,clk,result[4]);
 
-    assign mux_out = (~cntD & ~cntU) ? 5'd0 : (cntD) ? 5'b11111 : 5'd00001;
+    //assign mux_out = (~cntD & ~cntU) ? 5'd0 : (cntD) ? 5'b11111 : 5'd00001;
+    c2 output_mux0(1'd0,1'd1,1'd1,1'd0,cntD,cntD,cntU,cntU,mux_out[0]);
+    c2 output_mux1(1'd0,1'd0,1'd1,1'd0,cntD,cntD,cntU,cntU,mux_out[1]);
+    c2 output_mux2(1'd0,1'd0,1'd1,1'd0,cntD,cntD,cntU,cntU,mux_out[2]);
+    c2 output_mux3(1'd0,1'd0,1'd1,1'd0,cntD,cntD,cntU,cntU,mux_out[3]);
+    c2 output_mux4(1'd0,1'd0,1'd1,1'd0,cntD,cntD,cntU,cntU,mux_out[4]);
+
     //module Adder #(parameter N = 5)(a, b, cin, s, cout);
     Adder adder5(result,mux_out,1'd0,adder_out,cout);
-    assign down_done = ~|(result);
+    wire first_or;
+    wire second_or;
+    wire third_or;
+    wire inv_down_done;
+    Or first(result[0],result[1],first_or);
+    Or second(result[2],result[3],second_or);
+    Or third(first_or,second_or,third_or);
+    Or fourth(result[4],third_or,inv_down_done);
+    Not down_out(inv_down_done,down_done);
+
 
 
 endmodule
