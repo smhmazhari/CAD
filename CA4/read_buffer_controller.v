@@ -21,7 +21,7 @@ module read_buffer_controller (input clk,
     end
 
     // combinational part (next state)
-    always @(scratch_write_en,valid) begin
+    always @(*) begin
         ns = Wait ;
         case(ps)
             Wait : ns = (start == 1'b0) ? Wait :(scratch_write_en == 1'b1)? Read_Req : Wait ;
@@ -32,7 +32,7 @@ module read_buffer_controller (input clk,
     end
 
     // combinational part (primary output)
-    always @(ps) begin
+    always @(*) begin
         write_req_scratch = 1'b0;
         read_req_bufferr = 1'b0;
         cnt = 1'b0;

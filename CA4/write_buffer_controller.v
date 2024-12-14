@@ -20,7 +20,7 @@ module write_buffer_controller (input clk,
     end
 
     // combinational part (next state)
-    always @(par_done,ready) begin
+    always @(*) begin
         ns = Wait ;
         case(ps)
             Wait : ns = (start == 1'b0) ? Wait :(par_done == 1'b1)? Write_Req : Wait;
@@ -32,7 +32,7 @@ module write_buffer_controller (input clk,
     end
 
     // combinational part (primary output)
-    always @(ps) begin
+    always @(*) begin
         write_req = 1'b0;
         stall_output_buffer = 1'b0;
         write_in_buffer = 1'b0;
