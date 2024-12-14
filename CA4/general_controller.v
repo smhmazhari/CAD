@@ -24,7 +24,7 @@ module general_controller(input clk,input rst,input start,input done,output reg 
     always(*)begin
         {inner_rst,inner_start} = 2'b10;
         case (ps)
-            INIT: {inner_rst,inner_start} = start ? 2'b01 : 2'b01;
+            INIT: {inner_rst,inner_start} = start ? 2'b10 : 2'b01;
         endcase
     end
 
