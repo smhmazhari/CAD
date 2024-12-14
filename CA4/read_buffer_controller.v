@@ -2,6 +2,7 @@ module controller (input clk,
                    input rst,
                    input scratch_write_en,
                    input valid,
+                   input start,
                    output write_req_scratch,
                    output read_req_buffer,
                    output cnt,
@@ -22,7 +23,7 @@ module controller (input clk,
     always @(scratch_write_en,valid) begin
         ns = Wait ;
         case(ps)
-            Wait : ns = (scratch_write_en == 1'b0) ? Wait : Read_Req ;
+            Wait : ns = (scratch_write_en == 1'b0) ? Wait :(start == 1'b1)? Read_Req : Wait ;
             Read_Req : ns = (valid == 1'b0) ? Read_Req : Do_Write ;
             Do_Write : ns = Wait ;
             default : ns = Wait ;

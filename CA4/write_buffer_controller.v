@@ -1,7 +1,9 @@
 module controller (input clk,
                    input rst,
+                   input inner_rst,
                    input par_done,
                    input ready,
+                   input start,
                    output write_req,
                    output stall_output_buffer,
                    output write_in_buffer
@@ -12,7 +14,7 @@ module controller (input clk,
 
     // sequential part
     always @(posedge clk) begin
-        if(rst == 1'b1) 
+        if(rst == 1'b1 || inner_rst == 1'b1) 
             ps <= 2'b0;
         else ps <= ns;
     end
@@ -21,7 +23,7 @@ module controller (input clk,
     always @(par_done,ready) begin
         ns = Wait ;
         case(ps)
-            Wait : ns = (par_done == 1'b0) ? Wait : Write_Req ;
+            Wait : ns = (par_done == 1'b0) ? Wait :(start == 1'b1)? Write_Req : Wait;
             Write_Req : ns = (ready == 1'b0) ? Stall : Do_Write ;
             Stall : ns = (ready == 1'b0) ? Stall : Do_Write;
             Do_Write : ns = Wait ;
