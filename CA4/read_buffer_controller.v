@@ -4,7 +4,6 @@ module read_buffer_controller (input clk,
                    input scratch_write_en,
                    input valid,
                    input start,
-                   output write_req_scratch,
                    output read_req_buffer,
                    output cnt,
                    output write_in_scratch
@@ -26,23 +25,18 @@ module read_buffer_controller (input clk,
         case(ps)
             Wait : ns = (start == 1'b0) ? Wait :(scratch_write_en == 1'b1)? Read_Req : Wait ;
             Read_Req : ns = (valid == 1'b0) ? Read_Req : Do_Write ;
-            Do_Write : ns = Wait ;
+            Do_Write : ns = (scratch_write_en == 1'b1) ? Read_Req : Wait ;
             default : ns = Wait ;
         endcase
     end
 
     // combinational part (primary output)
     always @(*) begin
-        write_req_scratch = 1'b0;
         read_req_bufferr = 1'b0;
         cnt = 1'b0;
         write_in_scratch = 1'b0;
 
         case (ps)
-            Wait :  
-                begin
-                    write_req_scratch = 1'b1;
-                end
             Read_Req :
                 begin
                     read_req_buffer = 1'b1;
