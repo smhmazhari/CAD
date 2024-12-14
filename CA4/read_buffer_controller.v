@@ -1,5 +1,6 @@
-module controller (input clk,
+module read_buffer_controller (input clk,
                    input rst,
+                   input inner_rst,
                    input scratch_write_en,
                    input valid,
                    input start,
@@ -14,7 +15,7 @@ module controller (input clk,
 
     // sequential part
     always @(posedge clk) begin
-        if(rst == 1'b1) 
+        if(rst == 1'b1 || inner_rst == 1'b1) 
             ps <= 2'b0;
         else ps <= ns;
     end
@@ -23,7 +24,7 @@ module controller (input clk,
     always @(scratch_write_en,valid) begin
         ns = Wait ;
         case(ps)
-            Wait : ns = (scratch_write_en == 1'b0) ? Wait :(start == 1'b1)? Read_Req : Wait ;
+            Wait : ns = (start == 1'b0) ? Wait :(scratch_write_en == 1'b1)? Read_Req : Wait ;
             Read_Req : ns = (valid == 1'b0) ? Read_Req : Do_Write ;
             Do_Write : ns = Wait ;
             default : ns = Wait ;

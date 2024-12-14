@@ -1,4 +1,4 @@
-module controller (input clk,
+module write_buffer_controller (input clk,
                    input rst,
                    input inner_rst,
                    input par_done,
@@ -23,7 +23,7 @@ module controller (input clk,
     always @(par_done,ready) begin
         ns = Wait ;
         case(ps)
-            Wait : ns = (par_done == 1'b0) ? Wait :(start == 1'b1)? Write_Req : Wait;
+            Wait : ns = (start == 1'b0) ? Wait :(par_done == 1'b1)? Write_Req : Wait;
             Write_Req : ns = (ready == 1'b0) ? Stall : Do_Write ;
             Stall : ns = (ready == 1'b0) ? Stall : Do_Write;
             Do_Write : ns = Wait ;
