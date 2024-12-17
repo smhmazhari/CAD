@@ -1,4 +1,4 @@
-module general_controller(input clk,input rst,input start,input done,output reg inner_start,output reg inner_rst);
+module general_controller(input clk,input rst,input start,input done,output reg inner_start);
     parameter WAIT = 2'd0 , INIT = 2'd1 , COMPUTE = 2'd2;
     reg[1:0] ps;
     reg[1:0] ns;
@@ -12,19 +12,19 @@ module general_controller(input clk,input rst,input start,input done,output reg 
 
     end
     //next state
-    always(*)begin
+    always @(*)begin
         ns = WAIT;
         case(ps)
-            WAIT : start ? INIT : WAIT;
-            INIT : start ? INIT : COMPUTE;
-            COMPUTE : done ? WAIT : COMPUTE;
+            WAIT : ns =  start ? INIT : WAIT;
+            INIT : ns = start ? INIT : COMPUTE;
+            COMPUTE : ns = done ? WAIT : COMPUTE;
         endcase
     end
     //OUTPUT
-    always(*)begin
-        {inner_rst,inner_start} = 2'b10;
+    always @(*)begin
+        inner_start = 1'b0;
         case (ps)
-            INIT: {inner_rst,inner_start} = start ? 2'b10 : 2'b01;
+            INIT: inner_start = start ? 1'b0 : 1'b1;
         endcase
     end
 

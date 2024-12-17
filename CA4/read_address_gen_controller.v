@@ -1,9 +1,8 @@
 module read_address_gen_controller (input clk,
                    input rst,
-                   input inner_rst,
                    input can_count,
                    input start,
-                   output load_registers,
+                   output reg load_registers
                    );
     parameter Wait = 1'b0 , Count = 1'b1;
     reg ps;
@@ -11,7 +10,7 @@ module read_address_gen_controller (input clk,
 
     // sequential part
     always @(posedge clk) begin
-        if(rst == 1'b1 || inner_rst == 1'b1) 
+        if(rst == 1'b1 ) 
             ps <= 2'b0;
         else ps <= ns;
     end

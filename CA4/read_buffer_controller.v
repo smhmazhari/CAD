@@ -1,12 +1,11 @@
 module read_buffer_controller (input clk,
                    input rst,
-                   input inner_rst,
                    input scratch_write_en,
                    input valid,
                    input start,
-                   output read_req_buffer,
-                   output cnt,
-                   output write_in_scratch
+                   output reg read_req_buffer,
+                   output reg cnt,
+                   output reg write_in_scratch
                    );
     parameter Wait = 2'd0 , Read_Req = 2'd1 ,Do_Write = 2'd2;
     reg [1:0] ps;
@@ -14,7 +13,7 @@ module read_buffer_controller (input clk,
 
     // sequential part
     always @(posedge clk) begin
-        if(rst == 1'b1 || inner_rst == 1'b1) 
+        if(rst == 1'b1 ) 
             ps <= 2'b0;
         else ps <= ns;
     end
@@ -32,7 +31,7 @@ module read_buffer_controller (input clk,
 
     // combinational part (primary output)
     always @(*) begin
-        read_req_bufferr = 1'b0;
+        read_req_buffer = 1'b0;
         cnt = 1'b0;
         write_in_scratch = 1'b0;
 

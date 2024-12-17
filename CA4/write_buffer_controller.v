@@ -1,12 +1,11 @@
 module write_buffer_controller (input clk,
                    input rst,
-                   input inner_rst,
                    input par_done,
                    input ready,
                    input start,
-                   output write_req,
-                   output stall_output_buffer,
-                   output write_in_buffer
+                   output reg write_req,
+                   output reg stall_output_buffer,
+                   output reg write_in_buffer
                    );
     parameter Wait = 2'd0 , Write_Req = 2'd1 ,Stall = 2'd2, Do_Write = 2'd3 ;
     reg [1:0] ps;
@@ -14,7 +13,7 @@ module write_buffer_controller (input clk,
 
     // sequential part
     always @(posedge clk) begin
-        if(rst == 1'b1 || inner_rst == 1'b1) 
+        if(rst == 1'b1 ) 
             ps <= 2'b0;
         else ps <= ns;
     end
