@@ -29,7 +29,7 @@ module checker #(
           output can_mult,//,
           output Done);//TODO);
 
-    always @()begin
+    always @(*)begin
         if(current_filter-start_filter % filter_size == filter_size - 1)begin//1
             if(current_if - start_if % if_size == if_size -1)begin//a
                 if((current_filter + 1) / filter_size == CELL_NUMS_FILTER / filter_size)begin//i
@@ -127,7 +127,7 @@ module checker #(
                 end
         end
     end
-    always @()begin
+    always @(*)begin
         if((write_cnt_if + 1) % CELL_NUMS_IF == write_start)begin
             scratch_write_en = 1'd0;
         end

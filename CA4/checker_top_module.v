@@ -5,7 +5,8 @@ checker_top_module  #(
     parameter FILTER_CELL_SIZE = 8 ,
     parameter FILTER_ADDRESS_SIZE = 8 ,
     parameter STRIDE_SIZE = 2 ,
-    parameter CELL_NUMS = 8  
+    parameter CELL_NUMS_IF = 8,
+    parameter CELL_NUMS_FILTER = 8  
 )(
           input clk,
           input rst,
@@ -34,7 +35,7 @@ wire load;
                 .load_registers(load)
                    );
     
-    checker_datapath #(IF_CELL_SIZE,IF_ADDRESS_SIZE,FILTER_CELL_SIZE,FILTER_ADDRESS_SIZE,STRIDE_SIZE,CELL_NUMS) CHK_DP(
+    checker_datapath #(IF_CELL_SIZE,IF_ADDRESS_SIZE,FILTER_CELL_SIZE,FILTER_ADDRESS_SIZE,STRIDE_SIZE,CELL_NUMS_IF,CELL_NUMS_FILTER) CHK_DP(
         .clk(clk),
         .rst(rst),
         .stride(stride),

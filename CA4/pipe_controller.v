@@ -36,7 +36,7 @@ module pipe_cotroller(input clk,input rst,input start,input can_mult,output reg 
         {pipe_stall,ld_add,ld_mult} = 3'b000;
         case (ps)
             WAIT : pipe_stall = 1'd1;
-            PIPE : {ld_add,ld_mult} = 2'b11;
+            PIPE : {ld_add,ld_mult} = can_mult ? 2'b11 : 2'b10;
         endcase
     end
 

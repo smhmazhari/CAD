@@ -4,8 +4,8 @@ module check_register  #(
   input clk,  
   input load,
   input rst, 
-  input [REG_SIZE:0] data_in, 
-  output reg [REG_SIZE:0] data_out 
+  input [REG_SIZE-1:0] data_in, 
+  output reg [REG_SIZE-1:0] data_out 
 );
 
   always @(posedge clk) begin

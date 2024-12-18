@@ -4,7 +4,8 @@ module checker_datapath  #(
     parameter FILTER_CELL_SIZE = 8 ,
     parameter FILTER_ADDRESS_SIZE = 8 ,
     parameter STRIDE_SIZE = 2 ,
-    parameter CELL_NUMS = 8
+    parameter CELL_NUMS_IF = 8,
+    parameter CELL_NUMS_FILTER = 8
 )(
           input clk,
           input rst,
@@ -39,7 +40,9 @@ checker#(
     IF_ADDRESS_SIZE,
     FILTER_CELL_SIZE,
     FILTER_ADDRESS_SIZE,
-    STRIDE_SIZE
+    STRIDE_SIZE,
+    CELL_NUMS_IF,
+    CELL_NUMS_FILTER
 )checker_logic (stride,
           filter_size,
           if_size,
