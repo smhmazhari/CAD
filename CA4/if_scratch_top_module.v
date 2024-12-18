@@ -3,6 +3,8 @@ module if_scratch_top_module #(
         parameter SCRATCH_ADDRESS_SIZE = 8,
         parameter CELL_NUMS = 8
 )(
+        input clk,
+        input rst,
         input write_en,
         input [CELL_NUMS-1:0] din,
         input[SCRATCH_ADDRESS_SIZE-1:0] read_addr,

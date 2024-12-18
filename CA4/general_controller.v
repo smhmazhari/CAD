@@ -30,7 +30,7 @@ module general_controller(
     end
     //OUTPUT
     always @(*)begin
-        inner_start = 1'b0;
+        // inner_start = 1'b0;
         case (ps)
             INIT: inner_start = start ? 1'b0 : 1'b1;
         endcase

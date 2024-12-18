@@ -7,7 +7,7 @@ module input_buffer_top_module#(
     input rst,
     input wen,
     input scratch_write_en,
-    input start,
+    input inner_start,
     input [PAR_WRITE * DATA_WIDTH - 1 : 0]din,
     output [PAR_READ * DATA_WIDTH - 1 : 0] dout,
     output cnt,
@@ -15,13 +15,13 @@ module input_buffer_top_module#(
 );
 
 wire empty;
-
+wire full;
 Fifo_buffer #(
     .DATA_WIDTH(DATA_WIDTH) ,
     .PAR_WRITE (PAR_WRITE),
     .PAR_READ (PAR_READ),
     .DEPTH(DEPTH)
-)(
+)fb(
    .clk(clk),
    .rstn(~rst),   
    .clear(1'd0), 
@@ -38,7 +38,7 @@ read_buffer_controller Read_buffer_controller(
     .rst(rst),
     .scratch_write_en(scratch_write_en),
     .valid(~empty),
-    .start(start),
+    .start(inner_start),
     .cnt(cnt),
     .write_in_scratch(write_in_scratch)
 );

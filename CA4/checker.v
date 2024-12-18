@@ -7,24 +7,22 @@ module checker #(
     parameter CELL_NUMS_IF = 8,
     parameter CELL_NUMS_FILTER = 8
 )(
-    input [STRIDE_SIZE:0] stride,
+    input [STRIDE_SIZE-1:0] stride,
     input [2:0] filter_size,
     input [2:0] if_size,
-    input [IF_ADDRESS_SIZE-1:0]write_cnt_if,
-    input [FILTER_ADDRESS_SIZE-1:0]write_cnt_filter,
-    input [IF_ADDRESS_SIZE:0] write_addr_if,
-    input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
-    input [IF_ADDRESS_SIZE:0] start_if,
-    input [IF_ADDRESS_SIZE:0] current_if,
-    input [FILTER_ADDRESS_SIZE:0] start_filter,
-    input [FILTER_ADDRESS_SIZE:0] current_filter,
-    input [IF_ADDRESS_SIZE:0] write_start,
+    input [IF_ADDRESS_SIZE-1:0] write_addr_if,
+    input [FILTER_ADDRESS_SIZE-1:0] write_addr_filter,
+    input [IF_ADDRESS_SIZE-1:0] start_if,
+    input [IF_ADDRESS_SIZE-1:0] current_if,
+    input [FILTER_ADDRESS_SIZE-1:0] start_filter,
+    input [FILTER_ADDRESS_SIZE-1:0] current_filter,
+    input [IF_ADDRESS_SIZE-1:0] write_start,
     output reg scratch_write_en,//,
-    output reg [IF_ADDRESS_SIZE:0] start_if_out,//,
-    output reg [IF_ADDRESS_SIZE:0] current_if_out,//,
-    output reg [FILTER_ADDRESS_SIZE:0] start_filter_out,//,
-    output reg [FILTER_ADDRESS_SIZE:0] current_filter_out,//,
-    output reg [IF_ADDRESS_SIZE:0] write_start_out,//,
+    output reg [IF_ADDRESS_SIZE-1:0] start_if_out,//,
+    output reg [IF_ADDRESS_SIZE-1:0] current_if_out,//,
+    output reg [FILTER_ADDRESS_SIZE-1:0] start_filter_out,//,
+    output reg [FILTER_ADDRESS_SIZE-1:0] current_filter_out,//,
+    output reg [IF_ADDRESS_SIZE-1:0] write_start_out,//,
     output reg par_done,//,
     output reg can_count,//,
     output reg can_mult,//,
@@ -35,7 +33,7 @@ module checker #(
         if(current_filter-start_filter % filter_size == filter_size - 1)begin//1
             if(current_if - start_if % if_size == if_size -1)begin//a
                 if((current_filter + 1) / filter_size == CELL_NUMS_FILTER / filter_size)begin//i
-                    if((start_if + 1) % CELL_NUMS_IF == write_cnt_if)begin
+                    if((start_if + 1) % CELL_NUMS_IF == write_addr_if)begin
                         can_count = 1'd0;
                         can_mult = 1'd0;
                         par_done = 1'd1;
@@ -59,7 +57,7 @@ module checker #(
                     end
             end
                 else begin//ii
-                    if((start_filter + 1)%CELL_NUMS_FILTER == write_cnt_filter)begin
+                    if((start_filter + 1)%CELL_NUMS_FILTER == write_addr_filter)begin
                         can_count = 1'd0;
                         can_mult = 1'd0;
                         par_done = 1'd1;
@@ -82,7 +80,7 @@ module checker #(
                 end
             end
             else begin//b
-                if((current_if + 1) % CELL_NUMS_IF > write_cnt_if)begin
+                if((current_if + 1) % CELL_NUMS_IF > write_addr_if)begin
                     can_count = 1'd0;
                     can_mult = 1'd0;
                     par_done = 1'd1;
@@ -107,7 +105,7 @@ module checker #(
             end
         end
         else begin//2
-                if((current_if + 1) % CELL_NUMS_IF > write_cnt_if || (current_filter + 1) % CELL_NUMS_FILTER > write_cnt_filter )begin
+                if((current_if + 1) % CELL_NUMS_IF > write_addr_if || (current_filter + 1) % CELL_NUMS_FILTER > write_addr_filter )begin
                     can_count = 1'd0;
                     can_mult = 1'd0;
                     par_done = 1'd0;
@@ -130,7 +128,7 @@ module checker #(
         end
     end
     always @(*)begin
-        if((write_cnt_if + 1) % CELL_NUMS_IF == write_start)begin
+        if((write_addr_if + 1) % CELL_NUMS_IF == write_start)begin
             scratch_write_en = 1'd0;
         end
         else begin

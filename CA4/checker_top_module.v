@@ -11,18 +11,21 @@ checker_top_module  #(
           input clk,
           input rst,
           input inner_start,
-          input [STRIDE_SIZE:0] stride,
+          input [STRIDE_SIZE-1:0] stride,
           input [2:0] filter_size,
           input [2:0] if_size,
-          input write_cnt_if,
-          input write_cnt_filter,
-          input [IF_ADDRESS_SIZE:0] write_addr_if,
-          input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
+          input [IF_ADDRESS_SIZE-1:0] write_addr_if,
+          input [FILTER_ADDRESS_SIZE-1:0] write_addr_filter,
           output scratch_write_en,
           output par_done,
           output can_count,
           output can_mult,
-          output Done  
+          output Done ,
+          output [IF_ADDRESS_SIZE-1:0] start_if_out,
+          output [IF_ADDRESS_SIZE-1:0] current_if_out,
+          output [FILTER_ADDRESS_SIZE-1:0] start_filter_out,
+          output [FILTER_ADDRESS_SIZE-1:0] current_filter_out,
+          output [IF_ADDRESS_SIZE-1:0] write_start_out
 );
 
 wire load;
@@ -49,8 +52,6 @@ checker_datapath #(
         .stride(stride),
         .filter_size(filter_size),
         .if_size(if_size),
-        .write_cnt_if(write_cnt_if),
-        .write_cnt_filter(write_cnt_filter),
         .write_addr_if(write_addr_if),
         .write_addr_filter(write_addr_filter),
         .load(load),
@@ -58,7 +59,12 @@ checker_datapath #(
         .par_done(par_done),
         .can_count(can_count),
         .can_mult(can_mult),
-        .Done(Done)
+        .Done(Done),
+        .start_if_out(start_if_out),
+        .current_if_out(current_if_out),
+        .start_filter_out(start_filter_out),
+        .current_filter_out(current_filter_out),
+        .write_start_out(write_start_out)
 );
 
     
