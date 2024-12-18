@@ -1,8 +1,9 @@
 module //BE CHEKER DADE SHE.
-if_scratch  #(parameter SCRATCH_WIDTH = 8,
-        parameter SCRATCH_ADDRESS_SIZE = 8,
-        parameter CELL_NUMS = 8)
-(
+if_scratch  #(
+    parameter SCRATCH_WIDTH = 8,
+    parameter SCRATCH_ADDRESS_SIZE = 8,
+    parameter CELL_NUMS = 8
+)(
     input clk,
     input rst,
     input write_en,
@@ -11,11 +12,11 @@ if_scratch  #(parameter SCRATCH_WIDTH = 8,
     input[SCRATCH_ADDRESS_SIZE-1:0] read_addr,
     output[SCRATCH_WIDTH-1:0] data_out
 );
+
     reg [SCRATCH_WIDTH:0] if_scratch_pad [CELL_NUMS-1:0];
     assign data_out = if_scratch_pad[read_addr];
 
-    integer i;
-    
+    integer i;    
     always @(posedge clk ,posedge rst) begin
         if (rst) begin
 

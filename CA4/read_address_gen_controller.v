@@ -1,9 +1,11 @@
-module read_address_gen_controller (input clk,
-                   input rst,
-                   input can_count,
-                   input start,
-                   output reg load_registers
-                   );
+module read_address_gen_controller (
+    input clk,
+    input rst,
+    input can_count,
+    input start,
+    output reg load_registers
+);
+
     parameter Wait = 1'b0 , Count = 1'b1;
     reg ps;
     reg ns;

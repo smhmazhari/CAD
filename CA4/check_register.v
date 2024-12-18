@@ -1,6 +1,6 @@
 module check_register  #(
     parameter REG_SIZE = 16      
-) (
+)(
   input clk,  
   input load,
   input rst, 

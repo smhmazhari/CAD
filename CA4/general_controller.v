@@ -1,7 +1,15 @@
-module general_controller(input clk,input rst,input start,input done,output reg inner_start);
+module general_controller(
+    input clk,
+    input rst,
+    input start,
+    input done,
+    output reg inner_start
+);
+
     parameter WAIT = 2'd0 , INIT = 2'd1 , COMPUTE = 2'd2;
     reg[1:0] ps;
     reg[1:0] ns;
+    
     always @(posedge clk ,posedge rst)begin
         if(rst)begin
             ps <= WAIT;

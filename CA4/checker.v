@@ -6,28 +6,30 @@ module checker #(
     parameter STRIDE_SIZE = 2 ,
     parameter CELL_NUMS_IF = 8,
     parameter CELL_NUMS_FILTER = 8
-)(input [STRIDE_SIZE:0] stride,
-          input [2:0] filter_size,
-          input [2:0] if_size,
-          input [IF_ADDRESS_SIZE-1:0]write_cnt_if,
-          input [FILTER_ADDRESS_SIZE-1:0]write_cnt_filter,
-          input [IF_ADDRESS_SIZE:0] write_addr_if,
-          input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
-          input [IF_ADDRESS_SIZE:0] start_if,
-          input [IF_ADDRESS_SIZE:0] current_if,
-          input [FILTER_ADDRESS_SIZE:0] start_filter,
-          input [FILTER_ADDRESS_SIZE:0] current_filter,
-          input [IF_ADDRESS_SIZE:0] write_start,
-          output scratch_write_en,//,
-          output [IF_ADDRESS_SIZE:0] start_if_out,//,
-          output [IF_ADDRESS_SIZE:0] current_if_out,//,
-          output [FILTER_ADDRESS_SIZE:0] start_filter_out,//,
-          output [FILTER_ADDRESS_SIZE:0] current_filter_out,//,
-          output [IF_ADDRESS_SIZE:0] write_start_out,//,
-          output par_done,//,
-          output can_count,//,
-          output can_mult,//,
-          output Done);//TODO);
+)(
+    input [STRIDE_SIZE:0] stride,
+    input [2:0] filter_size,
+    input [2:0] if_size,
+    input [IF_ADDRESS_SIZE-1:0]write_cnt_if,
+    input [FILTER_ADDRESS_SIZE-1:0]write_cnt_filter,
+    input [IF_ADDRESS_SIZE:0] write_addr_if,
+    input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
+    input [IF_ADDRESS_SIZE:0] start_if,
+    input [IF_ADDRESS_SIZE:0] current_if,
+    input [FILTER_ADDRESS_SIZE:0] start_filter,
+    input [FILTER_ADDRESS_SIZE:0] current_filter,
+    input [IF_ADDRESS_SIZE:0] write_start,
+    output reg scratch_write_en,//,
+    output reg [IF_ADDRESS_SIZE:0] start_if_out,//,
+    output reg [IF_ADDRESS_SIZE:0] current_if_out,//,
+    output reg [FILTER_ADDRESS_SIZE:0] start_filter_out,//,
+    output reg [FILTER_ADDRESS_SIZE:0] current_filter_out,//,
+    output reg [IF_ADDRESS_SIZE:0] write_start_out,//,
+    output reg par_done,//,
+    output reg can_count,//,
+    output reg can_mult,//,
+    output reg Done
+);//TODO);
 
     always @(*)begin
         if(current_filter-start_filter % filter_size == filter_size - 1)begin//1
@@ -42,6 +44,7 @@ module checker #(
                         current_if_out = current_if;
                         start_if_out =start_if;
                         write_start_out = write_start;
+                    end
                     else begin
                         start_if_out = (start_if + if_size) % CELL_NUMS_IF;
                         current_if_out = (start_if + if_size) % CELL_NUMS_IF;
@@ -54,7 +57,6 @@ module checker #(
                         
 
                     end
-                end
             end
                 else begin//ii
                     if((start_filter + 1)%CELL_NUMS_FILTER == write_cnt_filter)begin

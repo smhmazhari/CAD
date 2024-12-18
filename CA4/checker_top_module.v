@@ -22,20 +22,28 @@ checker_top_module  #(
           output par_done,
           output can_count,
           output can_mult,
-          output Done
-    
+          output Done  
 );
 
 wire load;
-
-    read_address_gen_controller CHK_CU(.clk(clk),
-                .rst(rst),
-                .can_count(can_count),
-                .start(inner_start),
-                .load_registers(load)
-                   );
+// wire can_count;
+read_address_gen_controller CHK_CU(
+        .clk(clk),
+        .rst(rst),
+        .can_count(can_count),
+        .start(inner_start),
+        .load_registers(load)
+);
     
-    checker_datapath #(IF_CELL_SIZE,IF_ADDRESS_SIZE,FILTER_CELL_SIZE,FILTER_ADDRESS_SIZE,STRIDE_SIZE,CELL_NUMS_IF,CELL_NUMS_FILTER) CHK_DP(
+checker_datapath #(
+        .IF_CELL_SIZE(IF_CELL_SIZE),
+        .IF_ADDRESS_SIZE(IF_ADDRESS_SIZE),
+        .FILTER_CELL_SIZE(FILTER_CELL_SIZE),
+        .FILTER_ADDRESS_SIZE(FILTER_ADDRESS_SIZE),
+        .STRIDE_SIZE(STRIDE_SIZE),
+        .CELL_NUMS_IF(CELL_NUMS_IF),
+        .CELL_NUMS_FILTER(CELL_NUMS_FILTER)
+)CHK_DP(
         .clk(clk),
         .rst(rst),
         .stride(stride),
@@ -51,7 +59,7 @@ wire load;
         .can_count(can_count),
         .can_mult(can_mult),
         .Done(Done)
-    );
+);
 
     
     

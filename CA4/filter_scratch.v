@@ -1,7 +1,8 @@
-module 
-filter_scratch #(parameter SCRATCH_WIDTH = 8,
-        parameter SCRATCH_ADDRESS_SIZE = 8,
-        parameter CELL_NUMS = 8)(
+module filter_scratch #(
+    parameter SCRATCH_WIDTH = 8,
+    parameter SCRATCH_ADDRESS_SIZE = 8,
+    parameter CELL_NUMS = 8
+)(
     input clk,
     input rst,
     input write_en,
@@ -12,6 +13,7 @@ filter_scratch #(parameter SCRATCH_WIDTH = 8,
     input[SCRATCH_ADDRESS_SIZE-1:0] read_addr,
     output reg[SCRATCH_WIDTH-1:0] data_out
 );
+
     reg [SCRATCH_WIDTH:0] filter_scratch_pad [CELL_NUMS-1:0];
 
     integer i;

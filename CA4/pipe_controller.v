@@ -1,8 +1,17 @@
+module pipe_cotroller(
+    input clk,
+    input rst,
+    input start,
+    input can_mult,
+    output reg pipe_stall,
+    output reg ld_mult,
+    output reg ld_add
+);
 
-module pipe_cotroller(input clk,input rst,input start,input can_mult,output reg pipe_stall,output reg ld_mult,output reg ld_add);
     parameter WAIT = 1'd0 , PIPE = 1'd1;
     reg ps;
     reg ns;
+    
     always @(posedge clk,posedge rst)begin
         if(rst)begin
             ps <= 1'd0;

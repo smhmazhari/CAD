@@ -7,21 +7,22 @@ module checker_datapath  #(
     parameter CELL_NUMS_IF = 8,
     parameter CELL_NUMS_FILTER = 8
 )(
-          input clk,
-          input rst,
-          input [STRIDE_SIZE:0] stride,
-          input [2:0] filter_size,
-          input [2:0] if_size,
-          input write_cnt_if,
-          input write_cnt_filter,
-          input [IF_ADDRESS_SIZE:0] write_addr_if,
-          input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
-          input load,
-          output scratch_write_en,
-          output par_done,
-          output can_count,
-          output can_mult,
-          output Done);
+      input clk,
+      input rst,
+      input [STRIDE_SIZE:0] stride,
+      input [2:0] filter_size,
+      input [2:0] if_size,
+      input write_cnt_if,
+      input write_cnt_filter,
+      input [IF_ADDRESS_SIZE:0] write_addr_if,
+      input [FILTER_ADDRESS_SIZE:0] write_addr_filter,
+      input load,
+      output scratch_write_en,
+      output par_done,
+      output can_count,
+      output can_mult,
+      output Done
+);
           
 wire [IF_ADDRESS_SIZE:0] start_if; 
 wire [IF_ADDRESS_SIZE:0] current_if;
@@ -36,75 +37,86 @@ wire [FILTER_ADDRESS_SIZE:0] current_filter_out;
 wire [IF_ADDRESS_SIZE:0] write_start_out;
  
 checker#(
-    IF_CELL_SIZE,
-    IF_ADDRESS_SIZE,
-    FILTER_CELL_SIZE,
-    FILTER_ADDRESS_SIZE,
-    STRIDE_SIZE,
-    CELL_NUMS_IF,
-    CELL_NUMS_FILTER
-)checker_logic (stride,
-          filter_size,
-          if_size,
-          write_cnt_if,
-          write_cnt_filter,
-          write_addr_if,
-          write_addr_filter,
-          start_if,
-          current_if,
-          start_filter,
-          current_filter,
-          write_start,
-          scratch_write_en,
-          start_if_out,
-          current_if_out,
-          start_filter_out,
-          current_filter_out,
-          write_start_out,
-          par_done,
-          can_count,
-          can_mult,
-          Done);
+    .IF_CELL_SIZE(IF_CELL_SIZE),
+    .IF_ADDRESS_SIZE(IF_ADDRESS_SIZE),
+    .FILTER_CELL_SIZE(FILTER_CELL_SIZE),
+    .FILTER_ADDRESS_SIZE(FILTER_ADDRESS_SIZE),
+    .STRIDE_SIZE(STRIDE_SIZE),
+    .CELL_NUMS_IF(CELL_NUMS_IF),
+    .CELL_NUMS_FILTER(CELL_NUMS_FILTER)
+)checker_logic (
+          .stride(stride),
+          .filter_size(filter_size),
+          .if_size(if_size),
+          .write_cnt_if(write_cnt_if),
+          .write_cnt_filter(write_cnt_filter),
+          .write_addr_if(write_addr_if),
+          .write_addr_filter(write_addr_filter),
+          .start_if(start_if),
+          .current_if(current_if),
+          .start_filter(start_filter),
+          .current_filter(current_filter),
+          .write_start(write_start),
+          .scratch_write_en(scratch_write_en),
+          .start_if_out(start_if_out),
+          .current_if_out(current_if_out),
+          .start_filter_out(start_filter_out),
+          .current_filter_out(current_filter_out),
+          .write_start_out(write_start_out),
+          .par_done(par_done),
+          .can_count(can_count),
+          .can_mult(can_mult),
+          .Done(Done));
 
 
-check_register#(IF_ADDRESS_SIZE)if_map_start (
-   clk,  
-   load,
-   rst, 
-   start_if, 
-   start_if_out 
+check_register#(
+   .REG_SIZE(IF_ADDRESS_SIZE)
+)if_map_start (
+   .clk(clk),  
+   .load(load),
+   .rst(rst), 
+   .start_if(start_if), 
+   .start_if_out(start_if_out) 
 );
 
-check_register#(IF_ADDRESS_SIZE)if_map_current (
-   clk,  
-   load,
-   rst, 
-   current_if, 
-   current_if_out 
+check_register#(
+   .REG_SIZE(IF_ADDRESS_SIZE)
+)if_map_current (
+   .clk(clk),  
+   .load(load),
+   .rst(rst), 
+   .current_if(current_if), 
+   .current_if_out(current_if_out) 
 );
 
-check_register#(FILTER_ADDRESS_SIZE)filter_start (
-   clk,  
-   load,
-   rst, 
-   start_filter, 
-   start_filter_out 
+check_register#(
+   .REG_SIZE(FILTER_ADDRESS_SIZE)
+)filter_start (
+   .clk(clk),  
+   .load(load),
+   .rst(rst), 
+   .start_filter(start_filter), 
+   .start_filter_out(start_filter_out) 
 );
 
-check_register#(FILTER_ADDRESS_SIZE)filter_current (
-   clk,  
-   load,
-   rst, 
-   current_filter, 
-   current_filter_out 
+check_register#(
+   .REG_SIZE(FILTER_ADDRESS_SIZE)
+)filter_current (
+   .clk(clk),  
+   .load(load),
+   .rst(rst), 
+   .current_filter(current_filter), 
+   .current_filter_out(current_filter_out) 
 );
 
-check_register#(IF_ADDRESS_SIZE)write_Start_reg (
-   clk,  
-   load,
-   rst, 
-   write_start, 
-   write_start_out 
+check_register#(
+   .REG_SIZE(IF_ADDRESS_SIZE)
+)write_Start_reg (
+   .clk(clk),  
+   .load(load),
+   .rst(rst), 
+   .write_start(write_start), 
+   .write_start_out(write_start_out) 
 );
 
 endmodule

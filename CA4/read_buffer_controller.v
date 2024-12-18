@@ -1,11 +1,13 @@
-module read_buffer_controller (input clk,
-                   input rst,
-                   input scratch_write_en,
-                   input valid,
-                   input start,
-                   output reg cnt,
-                   output reg write_in_scratch
-                   );
+module read_buffer_controller (
+    input clk,
+    input rst,
+    input scratch_write_en,
+    input valid,
+    input start,
+    output reg cnt,
+    output reg write_in_scratch
+);
+
     parameter Wait = 1'd0 ,Do_Write = 1'd1;
     reg ps;
     reg ns;
@@ -21,7 +23,7 @@ module read_buffer_controller (input clk,
     always @(*) begin
         ns = Wait ;
         case(ps)
-            Wait : ns = (start == 1'b0) ? Wait :((scratch_write_en == 1'b1)? (valid? Do_Write : Wait)):Wait ;
+            Wait : ns = (start == 1'b0) ? Wait :((scratch_write_en == 1'b1)? ((valid == 1'b1) ? Do_Write : Wait):Wait) ;
             Do_Write : ns = (scratch_write_en == 1'b1) ? Do_Write : Wait ;
             default : ns = Wait ;
         endcase

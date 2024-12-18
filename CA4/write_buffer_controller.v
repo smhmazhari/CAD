@@ -1,11 +1,13 @@
-module write_buffer_controller (input clk,
-                   input rst,
-                   input par_done,
-                   input ready,
-                   input start,
-                   output reg stall_output_buffer,
-                   output reg write_in_buffer
-                   );
+module write_buffer_controller (
+    input clk,
+    input rst,
+    input par_done,
+    input ready,
+    input start,
+    output reg stall_output_buffer,
+    output reg write_in_buffer
+);
+
     parameter Wait = 2'd0 ,Stall = 2'd2, Do_Write = 2'd3 ;
     reg [1:0] ps;
     reg [1:0] ns;
