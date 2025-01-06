@@ -190,7 +190,7 @@ module design_datapath #(
     );
 
     // IF Register
-    wire dum1,dum2,dum3;
+    wire dum1,dum2;
     Register #(
         .SIZE(IF_SCRATCH_WIDTH)
     ) IF_reg (
@@ -211,7 +211,7 @@ module design_datapath #(
     wire [FILT_SCRATCH_WIDTH + IF_SCRATCH_WIDTH:0] psum_scratch_reg_out ;
     wire dum4;
     Register #(
-        .SIZE(IF_SCRATCH_WIDTH + FILT_SCRATCH_WIDTH)
+        .SIZE(IF_SCRATCH_WIDTH + FILT_SCRATCH_WIDTH+1)
     ) psum_scratch_reg (
         .clk(clk),
         .rst(rst | regs_clr),

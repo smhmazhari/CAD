@@ -109,7 +109,7 @@ module testbench1();
         start = 0;
         IF_wen = 0;
         PSUM_wen = 1;
-        psum_mode = 0;
+        psum_mode = 1;
         mode = 0;
         filter_wen = 0;
         outbuf_ren = 1;
