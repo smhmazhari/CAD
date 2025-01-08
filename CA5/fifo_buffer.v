@@ -9,22 +9,21 @@ module Fifo_buffer #(
     input clear, //clear buffer counters
     input ren, //read enable 
     input wen, //write enable
-    input [PAR_WRITE * DATA_WIDTH - 1 : 0] din, //input data to write into the buffer
-    output [PAR_READ * DATA_WIDTH - 1 : 0] dout, //output data to read from the buffer
+    input signed [PAR_WRITE * DATA_WIDTH - 1 : 0] din, //input data to write into the buffer, signed
+    output signed [PAR_READ * DATA_WIDTH - 1 : 0] dout, //output data to read from the buffer, signed
     output full, //output to signal if buffer is full
     output empty //output to signal if buffer is empty
 );
 
-//for cicular buffer, consider one more register as one is always unused
+//for circular buffer, consider one more register as one is always unused
 localparam BUFFER_DEPTH = DEPTH + 1;
 localparam BUFFER_ADDR_WIDTH = $clog2(BUFFER_DEPTH);
 localparam PAR_DATA_WRITE = PAR_WRITE == 1 ? PAR_WRITE - 1 : PAR_WRITE;
 localparam PAR_DATA_READ = PAR_READ == 1 ? PAR_READ - 1 : PAR_READ;
 
-reg [BUFFER_ADDR_WIDTH - 1 : 0] raddr_cnt, waddr_cnt;
+reg [BUFFER_ADDR_WIDTH - 1 : 0] raddr_cnt, waddr_cnt; // Should be unsigned
 wire buffer_wen, buffer_ren;
 wire at_max_write, at_max_read;
-
 
 assign buffer_wen = wen & !full;
 assign buffer_ren = ren & !empty;
@@ -65,8 +64,8 @@ Buffer #(
     .wen(buffer_wen),
     .waddr(waddr_cnt),
     .raddr(raddr_cnt),
-    .din(din),
-    .dout(dout)
+    .din(din), // Keep din as signed
+    .dout(dout) // Keep dout as signed
 );
 
 always @(posedge clk) begin
@@ -83,16 +82,13 @@ always @(posedge clk) begin
             waddr_cnt = waddr_cnt + PAR_WRITE;   
             if (waddr_cnt >= BUFFER_DEPTH)
                 waddr_cnt = waddr_cnt - BUFFER_DEPTH;
-
         end
         
-
         if (buffer_ren) begin
             raddr_cnt = raddr_cnt + PAR_READ;
             if (raddr_cnt >= BUFFER_DEPTH)
                 raddr_cnt = raddr_cnt - BUFFER_DEPTH;
         end
-        
     end
 end
 

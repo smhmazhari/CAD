@@ -11,12 +11,12 @@ module Buffer #(
     input wen,
     input [ADDR_WIDTH - 1 : 0] waddr, //write address
     input [ADDR_WIDTH - 1 : 0] raddr, //read address
-    input [PAR_WRITE * DATA_WIDTH - 1 : 0] din, //write data in
-    output [PAR_READ * DATA_WIDTH - 1 : 0] dout //read data out
+    input signed [PAR_WRITE * DATA_WIDTH - 1 : 0] din, //write data in
+    output signed [PAR_READ * DATA_WIDTH - 1 : 0] dout //read data out
 );
     localparam DEPTH_POW2 = (DEPTH & (DEPTH - 1)) == 0;
 
-    reg [DATA_WIDTH - 1 : 0] memory [0 : DEPTH - 1];
+    reg signed [DATA_WIDTH - 1 : 0] memory [0 : DEPTH - 1];
     
     reg [$clog2(PAR_WRITE) : 0] par_cnt;
 

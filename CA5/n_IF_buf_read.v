@@ -146,9 +146,10 @@ endmodule
 
 module IF_read_datapath #(parameter ADDR_LEN,
           parameter SCRATCH_DEPTH,
-          parameter SCRATCH_WIDTH)
+          parameter SCRATCH_WIDTH
+)
      (
-        clk, rst, IF_wcnt_en, IF_start_reg_en, IF_end_reg_en,
+        clk, rst, IF_wcnt_en, IF_start_reg_en, IF_end_reg_en,filt_len,
         IF_start, IF_end, IF_waddr
     );
 
@@ -159,7 +160,8 @@ module IF_read_datapath #(parameter ADDR_LEN,
     assign ld_cnt = (IF_waddr == SCRATCH_DEPTH - 1) & IF_wcnt_en;
 
     Counter #(
-        .NUM_BIT(ADDR_LEN)
+        .NUM_BIT(ADDR_LEN),
+        .DEPTH(SCRATCH_DEPTH)
     ) IF_wcnt (
         .clk(clk),
         .load_value({ADDR_LEN{1'b0}}),
@@ -167,7 +169,9 @@ module IF_read_datapath #(parameter ADDR_LEN,
         .ld_cnt(ld_cnt),
         .cnt_en(IF_wcnt_en),
         .co(wcnt_co_dum),
-        .cnt_out_wire(IF_waddr)
+        .cnt_out_wire(IF_waddr),
+        .cnt_mode(1'b0),
+
     );
 
     wire st_reg_dum, end_reg_dum;

@@ -168,7 +168,8 @@ module IF_read_datapath #(parameter ADDR_LEN,
     assign ld_cnt = (IF_waddr == SCRATCH_DEPTH - 1) & IF_wcnt_en;
 
     Counter #(
-        .NUM_BIT(ADDR_LEN)
+        .NUM_BIT(ADDR_LEN),
+        .DEPTH(SCRATCH_DEPTH)
     ) IF_wcnt (
         .clk(clk),
         .load_value({ADDR_LEN{1'b0}}),
@@ -176,7 +177,8 @@ module IF_read_datapath #(parameter ADDR_LEN,
         .ld_cnt(ld_cnt),
         .cnt_en(IF_wcnt_en),
         .co(wcnt_co_dum),
-        .cnt_out_wire(IF_waddr)
+        .cnt_out_wire(IF_waddr),
+        .cnt_mode(1'b0)
     );
 
     wire lwe_dum;

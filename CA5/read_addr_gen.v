@@ -182,16 +182,16 @@ module  read_addr_gen_datapath
         wire [IF_ADDR_LEN - 1: 0] stride_pos_out;
 
         wire dum1,dum2,dum3;
-        Counter #(.NUM_BIT(FILT_ADDR_LEN)) filt_count_cnt (.clk(clk),.rst(rst),.ld_cnt(1'b0),
-                .cnt_en(filter_count_cnt_en),.co(dum1),.load_value(0),.cnt_out_wire(filter_count_out));
+        Counter #(.NUM_BIT(FILT_ADDR_LEN),.DEPTH(IF_SCRATCH_DEPTH)) filt_count_cnt (.clk(clk),.rst(rst),.ld_cnt(1'b0),
+                .cnt_en(filter_count_cnt_en),.co(dum1),.load_value(0),.cnt_out_wire(filter_count_out),.cnt_mode(1'b0));
 
         wire[FILT_ADDR_LEN:0] filter_lower_bound;
         wire[2 * FILT_ADDR_LEN - 1:0] filt_lower_mult;
         assign filt_lower_mult = filter_count_out * filter_len;
         assign filter_lower_bound = filt_lower_mult[FILT_ADDR_LEN:0];
 
-        Counter #(.NUM_BIT(FILT_ADDR_LEN)) filt_pos_cnt (.clk(clk),.rst(rst),.ld_cnt(filter_pos_ld),
-        .cnt_en(filter_pos_cnt_en),.co(dum2),.load_value(0),.cnt_out_wire(filter_pos_out));
+        Counter #(.NUM_BIT(FILT_ADDR_LEN),.DEPTH(IF_SCRATCH_DEPTH)) filt_pos_cnt (.clk(clk),.rst(rst),.ld_cnt(filter_pos_ld),
+        .cnt_en(filter_pos_cnt_en),.co(dum2),.load_value(0),.cnt_out_wire(filter_pos_out),.cnt_mode(1'b0));
 
         wire [FILT_ADDR_LEN:0] filter_add_mult;
         assign filter_add_mult = (filter_pos_out + filter_lower_bound);
@@ -201,8 +201,8 @@ module  read_addr_gen_datapath
 
         assign filter_pos_flag = ((filter_len - 1) == filter_pos_out);
 
-        Counter #(.NUM_BIT(IF_ADDR_LEN)) stride_pos_cnt (.clk(clk),.rst(rst),.ld_cnt(stride_pos_ld),
-        .cnt_en(stride_cnt_en),.co(dum3),.load_value(0),.cnt_out_wire(stride_pos_out));
+        Counter #(.NUM_BIT(IF_ADDR_LEN),.DEPTH(IF_SCRATCH_DEPTH)) stride_pos_cnt (.clk(clk),.rst(rst),.ld_cnt(stride_pos_ld),
+        .cnt_en(stride_cnt_en),.co(dum3),.load_value(0),.cnt_out_wire(stride_pos_out),.cnt_mode(1'b0));
 
         wire[IF_ADDR_LEN:0] stride_mult;
         wire[2 * IF_ADDR_LEN - 1:0] temp_stride_mult_full;

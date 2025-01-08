@@ -13,8 +13,9 @@ module design_top #(
     parameter OUT_BUFFER_DEPTH,
     parameter PSUM_ADDR_LEN,
     parameter PSUM_SCRATCH_DEPTH,
-    parameter PSUM_SCRATCH_WIDTH)
-    (
+    parameter PSUM_SCRATCH_WIDTH
+)
+(
     input wire clk,
     input wire rst,
     input wire start,
@@ -22,12 +23,12 @@ module design_top #(
     input wire PSUM_wen,
     input wire psum_mode,
     input wire [1:0] mode,
-    input wire [IF_par_write * (IF_SCRATCH_WIDTH + 2) - 1 : 0] IF_din,
-    input wire [PSUM_SCRATCH_WIDTH - 1:0]PSUM_din,
+    input wire signed [IF_par_write * (IF_SCRATCH_WIDTH + 2) - 1 : 0] IF_din, // signed input
+    input wire signed [PSUM_SCRATCH_WIDTH - 1:0] PSUM_din, // signed input
     input wire filter_wen,
-    input wire [filter_par_write * FILT_SCRATCH_WIDTH - 1 : 0] filter_din,
+    input wire signed [filter_par_write * FILT_SCRATCH_WIDTH - 1 : 0] filter_din, // signed input
     input wire outbuf_ren,
-    output wire [outbuf_par_read * (IF_SCRATCH_WIDTH + FILT_SCRATCH_WIDTH + 1) - 1 : 0] outbuf_dout,
+    output wire signed [outbuf_par_read * (PSUM_SCRATCH_WIDTH) - 1 : 0] outbuf_dout, // signed output
     output wire IF_full,
     output wire IF_empty,
     output wire filter_full,
@@ -44,10 +45,11 @@ module design_top #(
 wire IF_read_start, filter_read_start, regs_clr, start_rd_gen, reset_all;
 wire IF_buf_read, filter_buf_read, full_done, psum_done;
 wire stride_count_flag, outbuf_write;
-wire [IF_SCRATCH_WIDTH + 1:0] IF_buf_inp;
-wire [FILT_SCRATCH_WIDTH - 1:0] filter_buf_inp;
-wire [PSUM_SCRATCH_WIDTH - 1:0] psum_buf_inp;
-wire [IF_SCRATCH_WIDTH + FILT_SCRATCH_WIDTH:0] module_outval;
+wire signed [IF_SCRATCH_WIDTH + 1:0] IF_buf_inp; // signed wire
+wire signed [FILT_SCRATCH_WIDTH - 1:0] filter_buf_inp; // signed wire
+wire signed [PSUM_SCRATCH_WIDTH - 1:0] psum_buf_inp; // signed wire
+wire signed [PSUM_SCRATCH_WIDTH-1:0] module_outval; // signed wire
+wire signed [outbuf_par_read * (PSUM_SCRATCH_WIDTH) - 1 : 0] outbuf_doutt; // signed wire
 
 // IF Buffer
 Fifo_buffer #(
@@ -66,6 +68,8 @@ Fifo_buffer #(
     .full(IF_full),
     .empty(IF_empty)
 );
+    
+assign outbuf_dout = psum_mode ? outbuf_doutt : module_outval;
 
 // Filter Buffer
 Fifo_buffer #(
@@ -107,7 +111,7 @@ Fifo_buffer #(
 
 // اصلاح سیگنال ها 
 Fifo_buffer #(
-    .DATA_WIDTH(IF_SCRATCH_WIDTH + FILT_SCRATCH_WIDTH + 1),
+    .DATA_WIDTH(PSUM_SCRATCH_WIDTH),
     .PAR_WRITE(1),
     .PAR_READ(outbuf_par_read),
     .DEPTH(OUT_BUFFER_DEPTH)
@@ -118,7 +122,7 @@ Fifo_buffer #(
     .ren(outbuf_ren),
     .wen(psum_mode),
     .din(module_outval),
-    .dout(outbuf_dout),
+    .dout(outbuf_doutt),
     .full(outbuf_full),
     .empty(outbuf_empty)
 );
@@ -136,9 +140,9 @@ design_datapath #(
     .PSUM_ADDR_LEN(PSUM_ADDR_LEN),
     .PSUM_SCRATCH_DEPTH(PSUM_SCRATCH_DEPTH),
     .PSUM_SCRATCH_WIDTH(PSUM_SCRATCH_WIDTH)
-    
 ) datapath (
-    .clk(clk),.rst(rst | reset_all),
+    .clk(clk),
+    .rst(rst | reset_all),
     .mode(mode),
     .psum_mode(psum_mode),
     .IF_read_start(IF_read_start),
@@ -163,7 +167,6 @@ design_datapath #(
 );
 
 // Controller
- 
 //complete controller
 design_controller #(
     .FILT_ADDR_LEN(FILT_ADDR_LEN),

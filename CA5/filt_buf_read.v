@@ -8,7 +8,7 @@ module filt_read_module #(
     input wire start,
     input wire [ADDR_LEN - 1:0] filt_len,
     input wire filt_buf_empty,
-
+    input wire cnt_mode,
     output wire filt_buf_read,
     output wire filt_scratch_wen,
     output wire [ADDR_LEN - 1:0] filt_waddr,
@@ -30,7 +30,8 @@ module filt_read_module #(
         .filt_wcnt_en(filt_wcnt_en),
         .filt_len(filt_len),
         .filt_waddr(filt_waddr),
-        .filt_end_flag(filt_end_flag)
+        .filt_end_flag(filt_end_flag),
+        .cnt_mode(cnt_mode)
     );
 
     // Instantiate the controller
@@ -120,6 +121,7 @@ module filt_read_datapath #(
     input wire clk,
     input wire rst,
     input wire filt_wcnt_en,
+    input wire cnt_mode,
     input wire [ADDR_LEN - 1:0] filt_len,
     output wire [ADDR_LEN - 1:0] filt_waddr,
     output wire filt_end_flag
@@ -128,7 +130,8 @@ module filt_read_datapath #(
     // Counter instantiation
     wire dum_co_num;
     Counter #(
-        .NUM_BIT(ADDR_LEN)
+        .NUM_BIT(ADDR_LEN),
+        .DEPTH(SCRATCH_DEPTH)
     ) filt_wcnt (
         .clk(clk),
         .rst(rst),
@@ -136,7 +139,8 @@ module filt_read_datapath #(
         .cnt_en(filt_wcnt_en),
         .co(dum_co_num),
         .load_value({ADDR_LEN{1'b0}}),
-        .cnt_out_wire(filt_waddr)
+        .cnt_out_wire(filt_waddr),
+        .cnt_mode(cnt_mode)
     );
 
     // Flag register connections
